@@ -1,0 +1,114 @@
+:root {
+    /* Color Palette */
+    --bg-dark: #0f1115;
+    /* Negro azulado muy oscuro */
+    --bg-card: #161920;
+    --text-main: #fcfcfc;
+    /* Blanco roto */
+    --text-muted: #94a3b8;
+    /* Gris claro */
+
+    --accent-primary: #4f46e5;
+    /* Indigo / Azul eléctrico */
+    --accent-secondary: #06b6d4;
+    /* Cian suave */
+
+    --gradient-main: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+
+    /* Typography */
+    --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+
+    /* Spacing */
+    --container-width: 1200px;
+    --header-height: 80px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 3.5rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Utilities */
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.text-gradient {
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary {
+    background: var(--gradient-main);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5);
+}

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPIX | Acceso Restringido</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+
+    <style>
+        /* Specific Styles for Index Portal */
+        .portal-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f1115 70%);
+        }
+
+        .portal-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .portal-card {
+            background: rgba(22, 25, 32, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(79, 70, 229, 0.3);
+            background: rgba(22, 25, 32, 0.8);
+        }
+
+        .portal-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .portal-card p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Modal / Password Input Area */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .auth-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .auth-box {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .auth-overlay.active .auth-box {
+            transform: scale(1);
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .auth-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+        }
+
+        @keyframes shake {
+
+            10%,
+            90% {
+                transform: translate3d(-1px, 0, 0);
+            }
+
+            20%,
+            80% {
+                transform: translate3d(2px, 0, 0);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-4px, 0, 0);
+            }
+
+            40%,
+            60% {
+                transform: translate3d(4px, 0, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .portal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="portal-container">
+        <div class="portal-header animate-fade-up">
+            <h1 style="font-size: 1.2rem; letter-spacing: 0.2rem; color: var(--text-muted); text-transform: uppercase;">
+                Portal de Acceso</h1>
+            <div style="font-size: 3rem; font-weight: 800;" class="text-gradient">CAPIX STUDIO</div>
+        </div>
+
+        <div class="portal-grid animate-fade-up delay-100">
+            <!-- IDEA CARD -->
+            <div class="portal-card" onclick="openAuth('IDEA')">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">💡</div>
+                <h2 style="color: var(--accent-secondary);">La Idea</h2>
+                <p>Acceso al documento conceptual. Timeline, fases y visión estratégica.</p>
+                <div class="btn btn-primary"
+                    style="background: rgba(6, 182, 212, 0.1); color: var(--accent-secondary); border: 1px solid rgba(6, 182, 212, 0.3);">
+                    Acceder
+                </div>
+            </div>
+
+            <!-- EMPRESA CARD -->
+            <div class="portal-card" onclick="openAuth('EMPRESA')">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🏢</div>
+                <h2 style="color: var(--accent-primary);">La Empresa</h2>
+                <p>Acceso para empleados y directiva. Sitio corporativo oficial.</p>
+                <div class="btn btn-primary"
+                    style="background: rgba(79, 70, 229, 0.1); color: var(--accent-primary); border: 1px solid rgba(79, 70, 229, 0.3);">
+                    Intranet
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="auth-overlay">
+        <div class="auth-box">
+            <h3 id="auth-title" style="margin-bottom: 0.5rem;">Cendenciales Requeridas</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Esta zona es restringida.</p>
+
+            <input type="password" id="password-input" class="auth-input" placeholder="Contraseña de acceso...">
+            <p id="auth-error" style="color: #ff4d4d; font-size: 0.85rem; display: none; margin-bottom: 1rem;"></p>
+
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button class="btn" onclick="closeAuth()"
+                    style="background: transparent; border: 1px solid rgba(255,255,255,0.1);">Cancelar</button>
+                <button class="btn btn-primary" onclick="submitAuth()">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/settings.js"></script> <!-- Will be created next -->
+    <script src="js/main.js"></script>
+
+    <script>
+        // Inline UI logic for Modal to avoid cluttering main.js with index-specific DOM manipulation
+        let currentMode = null;
+        const modal = document.getElementById('auth-modal');
+        const passInput = document.getElementById('password-input');
+        const authTitle = document.getElementById('auth-title');
+
+        function openAuth(mode) {
+            currentMode = mode;
+            modal.classList.add('active');
+            passInput.value = '';
+            document.getElementById('auth-error').style.display = 'none';
+            authTitle.textContent = mode === 'IDEA' ? "Acceso al Concepto" : "Acceso Corporativo";
+            passInput.focus();
+        }
+
+        function closeAuth() {
+            modal.classList.remove('active');
+            currentMode = null;
+        }
+
+        function submitAuth() {
+            if (currentMode && window.attemptLogin) {
+                window.attemptLogin(currentMode, passInput.value);
+            }
+        }
+
+        // Enter key support
+        passInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') submitAuth();
+        });
+
+        // Close on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAuth();
+        });
+    </script>
+</body>
+
+</html>
